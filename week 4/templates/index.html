@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laptop Price Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff; /* Light blue background */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9); /* White background with opacity */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 800px;
+            margin: 20px;
+            color: #333; /* Dark text color */
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333; /* Dark text color */
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+
+
+        }
+
+        input[type="text"],
+        input[type="number"],
+        select {
+            padding: 10px;
+            border: 1px solid #ccc; /* Light gray border */
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: #f5f5f5; /* Light gray background */
+            color: #333; /* Dark text color */
+            width: 100%;
+        }
+
+        input[type="submit"] {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <body>
+    <div class="container">
+        <h1>Laptop Price Prediction</h1>
+        <form method="post" accept-charset="utf-8" name="Modelform">
+            <div class="form-group">
+                <label for="company">Select the Company:</label>
+                <select class="form-control" id="company" name="company" required="1">
+                    <option value="" disabled selected>Select a company</option>
+                    {% for company in companies %}
+                    <option value="{{ company }}">{{ company }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Typename">Select the Type:</label>
+                <select class="form-control" id="Typename" name="Typename" required="1">
+                    <option value="" disabled selected>Select a type</option>
+                    {% for Typename in Typename %}
+                    <option value="{{ Typename }}">{{ Typename }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Inches">Screen Size (Inches):</label>
+                <input type="number" class="form-control" id="Inches" name="Inches" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="CPU">CPU:</label>
+                <select class="form-control" id="CPU" name="CPU" required="1">
+                    <option value="" disabled selected>Select a CPU</option>
+                    {% for CPU in CPU %}
+                    <option value="{{ CPU }}">{{ CPU }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Ram">RAM (GB):</label>
+                <input type="number" class="form-control" id="Ram" name="Ram" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="GPU">GPU:</label>
+                <select class="form-control" id="GPU" name="GPU" required="1">
+                    <option value="" disabled selected>Select a GPU</option>
+                    {% for GPU in GPU %}
+                    <option value="{{ GPU }}">{{ GPU }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="OpSys">Operating System:</label>
+                <select class="form-control" id="OpSys" name="OpSys" required="1">
+                    <option value="" disabled selected>Select an operating system</option>
+                    {% for OpSys in OpSys %}
+                    <option value="{{ OpSys }}">{{ OpSys }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Weight">Weight (kg):</label>
+                <input type="number" class="form-control" id="Weight" name="Weight" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="Flash">Flash Storage (GB):</label>
+                <input type="number" class="form-control" id="Flash" name="Flash" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="HDD">HDD Storage (GB):</label>
+                <input type="number" class="form-control" id="HDD" name="HDD" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="hybrid">Hybrid Storage (GB):</label>
+                <input type="number" class="form-control" id="hybrid" name="hybrid" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="ssd">SSD Storage (GB):</label>
+                <input type="number" class="form-control" id="ssd" name="ssd" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="ppi">Pixels Per Inch (ppi):</label>
+                <input type="number" class="form-control" id="ppi" name="ppi" step="any" required="1" min="0">
+            </div>
+
+            <div class="form-group">
+                <label for="prediction"></label>
+                <input type="submit" class="btn btn-primary" value="Predict" onclick="send_data()">
+            </div>
+        </form>
+
+        <br>
+        <div class="row">
+            <div class="col-12" style="text-align: center">
+                <h4><span id="prediction"></span></h4>
+            </div>
+        </div>
+    </div>
+        </div>
+    </div>
+</div>
+
+        <script>
+
+ function form_handler(event) {
+        event.preventDefault(); // Don't submit the form normally
+    }
+
+    function send_data()
+    {
+        document.querySelector('form').addEventListener("submit",form_handler);
+
+        var fd=new FormData(document.querySelector('form'));
+
+        var xhr= new XMLHttpRequest({mozSystem: true});
+
+        xhr.open('POST','/predict',true);
+        document.getElementById('prediction').innerHTML="Wait! Predicting Price.....";
+        xhr.onreadystatechange = function(){
+            if(xhr.readyState == XMLHttpRequest.DONE){
+                document.getElementById('prediction').innerHTML="Prediction: ₹"+xhr.responseText;
+
+            }
+        };
+
+        xhr.onload= function(){};
+
+        xhr.send(fd);
+    }
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+

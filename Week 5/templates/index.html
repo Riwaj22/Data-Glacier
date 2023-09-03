@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mobile Price Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #333; /* Dark background */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .container {
+        background-color: rgba(0, 0, 0, 0.8); /* Dark background with opacity */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        max-width: 800px;
+        margin: 20px;
+        color: #fff; /* White text color */
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #fff; /* White text color */
+    }
+
+    form {
+        background-color: #333; /* Dark background */
+        padding: 20px;
+        border-radius: 10px;
+        text-align: left;
+    }
+
+    label {
+        font-weight: bold;
+        color: #fff; /* White text color */
+    }
+
+    .form-group {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+    }
+
+    .form-group label,
+    .form-group input,
+    .form-group select {
+        width: 100%; /* Make all form fields the same size */
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+        padding: 10px;
+        border: 1px solid #ccc; /* Light gray border */
+        border-radius: 5px;
+        font-size: 14px;
+        background-color: #f5f5f5; /* Light gray background */
+        color: #333; /* Dark text color */
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+        background-color: #ddd; /* Light gray background on focus */
+    }
+
+    input[type="submit"] {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 15px 30px; /* Adjust padding for circular button */
+        border-radius: 50%; /* Circular button */
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+        margin: 0 auto; /* Center alignment */
+        display: block; /* Ensure center alignment */
+    }
+
+    input[type="submit"]:hover {
+        background: #0056b3;
+    }
+
+    /* Modal Styles */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+</style>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Mobile Price Prediction</h1>
+        <div class="flashcard">
+            <div class="flashcard-instructions">
+                <p>Welcome to Mobile Price Prediction. Fill in the details to find out</p>
+            </div>
+            <form method="post" accept-charset="utf-8" name="Modelform" action="/predict">
+                <div class="flashcard-form">
+                    <div class="form-group">
+                        <label><b>Select the Name of Phone:</b></label><br>
+                        <select class="selectpicker form-control" id="name" name="Name of Phone" required="1">
+                            <option value="" disabled selected>Select the Name of Phone:</option>
+                            {% for phone_name in name %}
+                                <option value="{{ phone_name }}">{{ phone_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Select the Processor -->
+                    <div class="form-group">
+                        <label><b>Select the Processor:</b></label><br>
+                        <select class="selectpicker form-control" id="Processor" name="Processor" required="1">
+                            <option value="" disabled selected><b>Select the Processor:</b></option>
+                            {% for Processor in Processor %}
+                                <option value="{{ Processor }}">{{ Processor }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="form-group">
+                        <label for="rating"><b>Rating ?/5:</b></label>
+                        <input type="number" class="form-control" id="rating" name="rating" step="any" required="1" min="0" max="5">
+                    </div>
+
+                    <!-- Number of Ratings -->
+                    <div class="form-group">
+                        <label for="no"><b>Number of Ratings:</b></label>
+                        <input type="number" class="form-control" id="no" name="no" step="any" required>
+                    </div>
+
+                    <!-- RAM -->
+                    <div class="form-group">
+                        <label for="RAM"><b>RAM (in GB):</b></label>
+                        <input type="number" class="form-control" id="RAM" name="RAM" required="1" min="0">
+                    </div>
+
+                    <!-- ROM/Storage -->
+                    <div class="form-group">
+                        <label for="ROM"><b>ROM/Storage (in GB):</b></label>
+                        <input type="number" class="form-control" id="ROM" name="ROM" required="1" min="0">
+                    </div>
+
+                    <!-- Front Camera -->
+                    <div class="form-group">
+                        <label for="f"><b>Front Camera:</b></label>
+                        <input type="number" class="form-control" id="f" name="f" step="any" required>
+                    </div>
+
+                    <!-- Battery -->
+                    <div class="form-group">
+                        <label for="Battery"><b>Battery (in mAh):</b></label>
+                        <input type="number" class="form-control" id="Battery" name="Battery" required="1" min="0">
+                    </div>
+
+                    <!-- Rear Camera Resolution -->
+                    <div class="form-group">
+                        <label for="cam"><b>Rear Camera Resolution:</b></label>
+                        <input type="number" class="form-control" id="cam" name="cam" required="1" min="0">
+                    </div>
+
+                    <!-- Select the Type of camera -->
+                    <div class="form-group">
+                        <label for="ty"><b>Select the Type of camera:</b></label><br>
+                        <select class="form-control" id="ty" name="ty" required="1">
+                            <option value="" disabled selected>Select the type of camera</option>
+                            {% for camera_type in ty %}
+                                <option value="{{ camera_type }}">{{ camera_type }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <button type="submit" class="flashcard-submit" id="predictBtn" disabled>Predict</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <!-- Add a div to display the prediction value in the same window -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>Mobile Price Prediction Result</h2>
+            <p id="predictionResult"></p>
+        </div>
+    </div>
+
+<script>
+    var modal = document.getElementById('myModal');
+    var span = document.getElementById('closeModal');
+    var btn = document.getElementById('predictBtn');
+    var predictionResult = document.getElementById('predictionResult');
+    var form = document.forms['Modelform'];
+
+    // Function to check if all required fields are filled
+    function areFieldsFilled() {
+        var requiredFields = document.querySelectorAll('select[required], input[required]');
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Function to enable/disable the Predict button based on field completion
+    function updatePredictButton() {
+        btn.disabled = !areFieldsFilled();
+    }
+
+    // Function to display the prediction in a modal
+    function displayPopupPrediction(predictionValue) {
+        predictionResult.innerHTML = 'Prediction: ₹' + predictionValue;
+        modal.style.display = 'block';
+    }
+
+    // Initial state of the Predict button
+    updatePredictButton();
+
+    // Check fields when they change
+    var formElements = document.querySelectorAll('select, input');
+    for (var i = 0; i < formElements.length; i++) {
+        formElements[i].addEventListener('change', updatePredictButton);
+    }
+
+    btn.onclick = function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        if (areFieldsFilled()) {
+            // Serialize the form data
+            var formData = new FormData(form);
+
+            // Send a POST request to the server using Fetch API or XMLHttpRequest
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the prediction in the modal
+                displayPopupPrediction(data.prediction);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            alert('Please fill out all required fields before predicting.');
+        }
+    };
+
+    span.onclick = function() {
+        // Close the modal when the close button is clicked
+        modal.style.display = 'none';
+    };
+</script>
+</body>
+</html>

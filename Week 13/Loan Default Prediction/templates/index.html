@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Loan Default Prediction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0; /* Light background */
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+    }
+
+    .container {
+        background-color: #fff; /* White background */
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 800px;
+        margin: 20px;
+        color: #333;
+        text-align: center;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    form {
+        background-color: #f5f5f5; /* Light gray background */
+        padding: 20px;
+        border-radius: 10px;
+        text-align: left;
+    }
+
+    .form-group {
+        margin-bottom: 20px;
+        display: flex; /* Display form elements in a row */
+        align-items: center;
+    }
+
+    .form-group label {
+        flex-basis: 30%; /* Adjust the label width */
+        font-weight: bold;
+        color: #333;
+    }
+
+    .form-group select, .form-group input {
+        flex: 1; /* Expand the input to fill remaining space */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+        background-color: #fff;
+        color: #333;
+    }
+
+    .form-group select:focus, .form-group input:focus {
+        background-color: #f9f9f9;
+    }
+
+    input[type="submit"] {
+        background: #007bff;
+        color: white;
+        border: none;
+        padding: 15px 30px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background 0.3s;
+        margin: 0 auto;
+        display: block;
+    }
+
+    input[type="submit"]:hover {
+        background: #0056b3;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Loan Default Prediction</h1>
+        <div class="flashcard">
+            <div class="flashcard-instructions">
+                <p>Loan Default Prediction. Fill in the details to find out</p>
+            </div>
+            <form method="post" accept-charset="utf-8" name="Modelform" action="/predict">
+                <div class="flashcard-form">
+                    <div class="form-group">
+                        <label><b>Select the Job:</b></label>
+                        <select class="selectpicker form-control" name="Job" required="1">
+                            <option value="" disabled selected>Select the Job</option>
+                            {% for Job in Job %}
+                                <option value="{{ Job }}">{{ Job }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Marital Status:</b></label>
+                        <select class="selectpicker form-control" name="marital" required="1">
+                            <option value="" disabled selected>Marital Status</option>
+                            {% for marital in marital %}
+                                <option value="{{ marital }}">{{ marital }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Education:</b></label>
+                        <select class="selectpicker form-control" name="education" required="1">
+                            <option value="" disabled selected>Education</option>
+                            {% for education in education %}
+                                <option value="{{ education }}">{{ education }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Default:</b></label>
+                        <select class="selectpicker form-control" name="default" required="1">
+                            <option value="" disabled selected>Default</option>
+                            {% for default in default %}
+                                <option value="{{ default }}">{{ default }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Housing:</b></label>
+                        <select class="selectpicker form-control" name="housing" required="1">
+                            <option value="" disabled selected>Housing</option>
+                            {% for housing in housing %}
+                                <option value="{{ housing }}">{{ housing }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Loan:</b></label>
+                        <select class="selectpicker form-control" name="loan" required="1">
+                            <option value="" disabled selected>Loan</option>
+                            {% for loan in loan %}
+                                <option value="{{ loan }}">{{ loan }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Contact:</b></label>
+                        <select class="selectpicker form-control" name="contact" required="1">
+                            <option value="" disabled selected>Contact</option>
+                            {% for contact in contact %}
+                                <option value="{{ contact }}">{{ contact }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Month:</b></label>
+                        <select class="selectpicker form-control" name="month" required="1">
+                            <option value="" disabled selected>Month</option>
+                            {% for month in month %}
+                                <option value="{{ month }}">{{ month }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label><b>Day:</b></label>
+                        <select class="selectpicker form-control" name="day" required="1">
+                            <option value="" disabled selected>Day</option>
+                            {% for day in day %}
+                                <option value="{{ day }}">{{ day }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="age"><b>Age:</b></label>
+                    <input type="number" class="form-control" name="age" step="any" required="1" min="0" max="5">
+                </div>
+
+                <div class="form-group">
+                    <label for="duration"><b>Duration:</b></label>
+                    <input type="number" class="form-control" name="duration" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="campaign"><b>Campaign:</b></label>
+                    <input type="number" class="form-control" name="campaign" required="1" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="emp"><b>Emp Rate:</b></label>
+                    <input type="number" class="form-control" name="emp" required="1" min="0">
+                </div>
+
+                <div class="form-group">
+                    <label for="price"><b>Emp Price:</b></label>
+                    <input type="number" class="form-control" name="price" step="any" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="conf"><b>Conf Price:</b></label>
+                    <input type="number" class="form-control" name="conf" required="1" min="0">
+                </div>
+
+                <button type="submit" class="flashcard-submit" id="predictBtn" disabled>Predict</button>
+            </form>
+        </div>
+    </div>
+
+ <div id="predictionResultModal" style="display: none;">
+        <div id="predictionResultContent" style="padding: 20px; background-color: #fff; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);">
+            <span id="closeModal" style="float: right; cursor: pointer;">&times;</span>
+            <p id="predictionResult" style="text-align: center; font-weight: bold;"></p>
+        </div>
+    </div>
+
+
+<script>
+    var modal = document.getElementById('myModal');
+    var span = document.getElementById('closeModal');
+    var btn = document.getElementById('predictBtn');
+    var predictionResult = document.getElementById('predictionResult');
+    var form = document.forms['Modelform'];
+
+    // Function to check if all required fields are filled
+    function areFieldsFilled() {
+        var requiredFields = document.querySelectorAll('select[required], input[required]');
+        for (var i = 0; i < requiredFields.length; i++) {
+            if (!requiredFields[i].value) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    // Function to enable/disable the Predict button based on field completion
+    function updatePredictButton() {
+        btn.disabled = !areFieldsFilled();
+    }
+
+    // Function to display the prediction in a modal
+    function displayPredictionModal(predictionValue) {
+        predictionResult.innerHTML = 'Prediction: ₹' + predictionValue;
+        modal.style.display = 'block';
+    }
+
+    // Initial state of the Predict button
+    updatePredictButton();
+
+    // Check fields when they change
+    var formElements = document.querySelectorAll('select, input');
+    for (var i = 0; i < formElements.length; i++) {
+        formElements[i].addEventListener('change', updatePredictButton);
+    }
+
+    btn.onclick = function(e) {
+        e.preventDefault(); // Prevent the default form submission
+
+        if (areFieldsFilled()) {
+            // Serialize the form data
+            var formData = new FormData(form);
+
+            // Send a POST request to the server using Fetch API or XMLHttpRequest
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data); // For debugging - check the response data
+                if (data.hasOwnProperty('prediction')) {
+                    // Display the prediction in the modal
+                    displayPredictionModal(data.prediction);
+                } else {
+                    // Handle the case where the prediction is not available
+                    alert('Prediction not available.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        } else {
+            alert('Please fill out all required fields before predicting.');
+        }
+    };
+
+    span.onclick = function() {
+        // Close the modal when the close button is clicked
+        modal.style.display = 'none';
+    };
+</script>
+
+
+</body>
+</html>
